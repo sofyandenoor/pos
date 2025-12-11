@@ -60,6 +60,22 @@ class WarehouseService
         return $this->warehouseRepository->update($id, $data);
     }
 
+    //hapus data warehouse
+    public function delete(int $id)
+    {
+        //mengambil daya dari warehouseRepository by id
+        $fields = ['*'];
+        $warehouse = $this->warehouseRepository->getById($id, $fields);
+
+        //memastikan apakah ada foto yg lama maka akan terhapus
+        if(!empty($warehouse->photo)){
+            $this->deletePhoto($warehouse->photo);
+        }
+
+        // meneruskan kepada warehouseRepository
+        $this->warehouseRepository->delete($id);
+    }
+
     // function khusus untuk upload foto sesuai dengan folder yang ditentukan
     private function uploadPhoto(UploadedFile $photo)
     {
